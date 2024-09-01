@@ -1,0 +1,5 @@
+version: '3.7'
+
+services:
+    mystickcounter:
+        image: maxsurm/mystickcounter:latest

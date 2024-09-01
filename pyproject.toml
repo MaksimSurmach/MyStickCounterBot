@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mystickcounterbot"
+version = "0.0.1"
+description = "Telegram bot to count the smoked sticks"
+authors = ["Maksim Surmach <maxsurm@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pymongo = "^4.8.0"
+matplotlib = "^3.9.2"
+mplcyberpunk = "^0.7.1"
+pydantic = "^2.8.2"
+pydantic-settings = "^2.4.0"
+pytelegrambotapi = "^4.22.1"
+datetime = "^5.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,53 @@
+
+name: Master build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: 3.11.9
+
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade poetry
+            poetry install
+
+      - name: Make docker image
+        run: |
+            docker build -t maxsurm/mystickcounter:latest .
+
+      - name: Push docker image
+        run: |
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            docker push maxsurm/mystickcounter:latest
+
+      - name: Deploy stack to Portainer
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: 'mystickcounter-bot'
+          stack-definition: 'docker-compose.yml'
+          template-variables: '{"DB_PASSWORD": "${{ secrets.DB_PASSWORD }}", 
+                                "DB_USER": "${{ secrets.DB_USER }}", 
+                                "DB_NAME": "${{ secrets.DB_NAME }}"
+                                "DB_URL": "${{ secrets.DB_URL }}"}
+                                "BOT_TOKEN": "${{ secrets.BOT_TOKEN }}"}'
+          image: maxsurm/mystickcounter:latest
+          prune-stack: true
+          pull-image: true
