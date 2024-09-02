@@ -13,7 +13,8 @@ class MongoDB:
         self.uri = uri
         self.username = username
         self.password = password
-        self.client = MongoClient(f"mongodb+srv://{username}:{password}@{uri}/{db_name}?retryWrites=true&w=majority", tlsCAFile=certifi.where())
+        self.client = MongoClient(f"mongodb+srv://{username}:{password}@{uri}/{db_name}?retryWrites=true&w=majority",
+                                  tlsCAFile=certifi.where(), tlsAllowInvalidCertificates=True)
 
     def connect(self):
         try:

@@ -22,8 +22,15 @@ jobs:
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: create version
+        shell: bash
+        run: |
+          VERSION=${{ github.sha }}
+          VERSION=${VERSION:0:7}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: maxsurm/mystickcounter:latest
+          tags: maxsurm/mystickcounter:${{ env.VERSION }}, maxsurm/mystickcounter:latest
