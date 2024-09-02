@@ -3,3 +3,13 @@ version: '3.7'
 services:
     mystickcounter:
         image: maxsurm/mystickcounter:latest
+        container_name: mystickcounter
+        restart: always
+        pull_policy: always
+        environment:
+            - DB_PASSWORD=${DB_PASSWORD}
+            - DB_USER=${DB_USER}
+            - DB_URL=${DB_URL}
+            - DB_NAME=${DB_NAME}
+            - BOT_TOKEN=${BOT_TOKEN}
+

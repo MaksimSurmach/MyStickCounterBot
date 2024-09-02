@@ -34,3 +34,17 @@ jobs:
         with:
           push: true
           tags: maxsurm/mystickcounter:${{ env.VERSION }}, maxsurm/mystickcounter:latest
+
+  Deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          endpoint: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: mystickcounter
+          stack-definition: docker-compose.yml
+          image: maxsurm/mystickcounter:${{ env.VERSION }}

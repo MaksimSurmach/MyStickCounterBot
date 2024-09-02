@@ -12,6 +12,7 @@ def init_actions(bot: telebot.TeleBot):
         bot.send_message(message.chat.id, Messages.START.value, reply_markup=keyboard_menu(), parse_mode="Markdown")
 
     @bot.message_handler(commands=["help"])
+    @bot.message_handler(func=lambda message: message.text == KeyboardButtons.HELP.value)
     def help_command(message):
         sync_user_data(message, bot)
         bot.send_message(message.chat.id, Messages.HELP.value, reply_markup=keyboard_menu(), parse_mode="Markdown")
@@ -27,8 +28,6 @@ def sync_user_data(message, bot):
             bot.logging.error(f"Failed to create user {message.chat.id}")
         else:
             bot.logging.info(f"User {message.chat.id} created")
-
-
 
 
 def add_menu(call, bot):

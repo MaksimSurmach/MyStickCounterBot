@@ -121,14 +121,13 @@ class MongoDB:
             return False
 
     def get_user(self, user_id: int):
-        user = self.db.users.find_one({"user_id": user_id})
-        if user is None:
-            return None
-        for key in user.keys():
-            if key == "_id":
-                continue
-            user[key] = user[key]
-        return UserMetaData(**user)
+        raw_data = self.db.users.find_one({"user_id": user_id})
+        user = UserMetaData(user_id=0)
+        for key in UserMetaData.__fields__.keys():
+            if key in raw_data:
+                setattr(user, key, raw_data[key])
+
+        return user if user.user_id != 0 else None
 
     def set_user_goal(self, user_id: int, goal: int):
         try:
