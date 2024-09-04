@@ -40,6 +40,8 @@ class Messages(enum.Enum):
     NO_STICKS = "You haven't smoked any cigarettes today."
     SET_GOAL = "🎯 Please enter your daily smoking goal. \n\n" + \
                "Press the button below or type in command.\n" + "`/setgoal <number>`"
+    SET_PRICE = "💰 Please enter the price of a cigarette pack(20 sticks). \n\n" + \
+                "Press the button below or type in command.\n" + "`/setprice <number>`"
     ERROR = " Error occurred."
     TBD = "This feature is still under development. Stay tuned for updates!"
 

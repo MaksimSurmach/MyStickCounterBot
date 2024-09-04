@@ -123,6 +123,8 @@ class MongoDB:
     def get_user(self, user_id: int):
         raw_data = self.db.users.find_one({"user_id": user_id})
         user = UserMetaData(user_id=0)
+        if raw_data is None:
+            return None
         for key in UserMetaData.__fields__.keys():
             if key in raw_data:
                 setattr(user, key, raw_data[key])
@@ -142,3 +144,17 @@ class MongoDB:
         if user is None:
             return None
         return user.get("goals", {}).get("daily_goal", 0)
+
+    def set_user_price(self, user_id: int, price: int):
+        try:
+            self.db.users.update_one({"user_id": user_id}, {"$set": {"prices.price": price}})
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def get_user_price(self, user_id: int):
+        user = self.db.users.find_one({"user_id": user_id})
+        if user is None:
+            return None
+        return user.get("prices", {}).get("price", 0)
